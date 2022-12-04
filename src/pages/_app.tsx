@@ -1,9 +1,16 @@
-import { type AppType } from "next/dist/shared/lib/utils";
+import { ApolloProvider } from '@apollo/client'
+import { type AppType } from 'next/dist/shared/lib/utils'
 
-import "../styles/globals.css";
+import { client } from '../apollo/client'
+
+import '../styles/globals.css'
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  return <Component {...pageProps} />;
-};
+  return (
+    <ApolloProvider client={client}>
+      <Component {...pageProps} />
+    </ApolloProvider>
+  )
+}
 
-export default MyApp;
+export default MyApp
