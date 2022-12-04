@@ -13,13 +13,13 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel-plugin for production.
  */
 const documents = {
-    "\n  query GetPosts {\n    posts(where: { orderby: { order: ASC, field: MENU_ORDER } }) {\n      edges {\n        node {\n          title\n        }\n      }\n    }\n  }\n": types.GetPostsDocument,
+    "\n  query GetPosts($cursor: String) {\n    posts(\n      first: 3\n      after: $cursor\n      where: { orderby: { order: ASC, field: MENU_ORDER } }\n    ) {\n      edges {\n        node {\n          title\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n    }\n  }\n": types.GetPostsDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetPosts {\n    posts(where: { orderby: { order: ASC, field: MENU_ORDER } }) {\n      edges {\n        node {\n          title\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetPosts {\n    posts(where: { orderby: { order: ASC, field: MENU_ORDER } }) {\n      edges {\n        node {\n          title\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query GetPosts($cursor: String) {\n    posts(\n      first: 3\n      after: $cursor\n      where: { orderby: { order: ASC, field: MENU_ORDER } }\n    ) {\n      edges {\n        node {\n          title\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n    }\n  }\n"): (typeof documents)["\n  query GetPosts($cursor: String) {\n    posts(\n      first: 3\n      after: $cursor\n      where: { orderby: { order: ASC, field: MENU_ORDER } }\n    ) {\n      edges {\n        node {\n          title\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n    }\n  }\n"];
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
