@@ -3,8 +3,11 @@ import { type NextPage } from 'next'
 
 import { client } from '../apollo'
 import { graphql } from '../gql/gql'
-import { type RootQueryToPostConnectionEdge } from '../gql/graphql'
-import useSWRInfinite, { type SWRInfiniteKeyLoader } from 'swr/infinite'
+import { type RootQueryToPostConnection } from '../gql/graphql'
+import useSWRInfinite, {
+  unstable_serialize,
+  type SWRInfiniteKeyLoader,
+} from 'swr/infinite'
 
 interface PostProps {
   title: string
@@ -15,7 +18,7 @@ const Post: FC<PostProps> = ({ title }) => {
 }
 
 interface HomeProps {
-  posts: Array<RootQueryToPostConnectionEdge>
+  posts: RootQueryToPostConnection
 }
 
 const query = graphql(`
@@ -62,9 +65,12 @@ const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
   return [previousPageData.posts.pageInfo.endCursor]
 }
 
-const Home: NextPage<HomeProps> = () => {
+const Home: NextPage<HomeProps> = ({ posts }) => {
   const { data, error, size, setSize } = useSWRInfinite(getKey, fetcher, {
     revalidateOnFocus: false,
+    fallback: {
+      [unstable_serialize(getKey)]: [posts],
+    },
   })
 
   if (error) return <div>failed to load</div>
@@ -92,11 +98,11 @@ const Home: NextPage<HomeProps> = () => {
 export default Home
 
 export async function getStaticProps() {
-  // const { data } = await client.query({ query })
+  const { data } = await client.query({ query })
 
   return {
     props: {
-      // posts: data.posts?.edges,
+      posts: data,
     },
   }
 }
