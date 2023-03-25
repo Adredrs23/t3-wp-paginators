@@ -73,6 +73,10 @@ const Home: NextPage<HomeProps> = ({ posts }) => {
     },
   })
 
+  // depicting how both of them match
+  console.log('data from fetcher', data)
+  console.log('default data', [posts])
+
   if (error) return <div>failed to load</div>
 
   if (!data) return <div>loading...</div>
